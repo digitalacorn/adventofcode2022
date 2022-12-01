@@ -4,7 +4,7 @@ use std::io::{self, BufRead};
 use std::ops;
 use std::path::Path;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 struct Elf {
     number: u32,
     carrying: u32,
@@ -47,12 +47,26 @@ fn compare_elfs(current_best_elf: &Elf, contender_elf: &Elf) -> Elf {
     }
 }
 
+fn update_worst_best_elf(top_elves: &mut [Elf], contender_elf: &Elf) {
+    let mut worst_carrying: u32 = 99999999;
+    let mut worst_idx: usize = 0;
+    for index in 0..top_elves.len() {
+        if top_elves[index].carrying <= worst_carrying {
+            worst_idx = index;
+            worst_carrying = top_elves[index].carrying;
+        }
+    }
+
+    top_elves[worst_idx] = compare_elfs(&top_elves[worst_idx], contender_elf);
+}
+
 pub fn run() {
     println!("Welcome to day1!");
     let mut best_elf = Elf {
         number: 0,
         carrying: 0,
     };
+    let mut top_elves: [Elf; 3] = [best_elf; 3];
     let mut current_elf = Elf {
         number: 1,
         carrying: 0,
@@ -67,6 +81,8 @@ pub fn run() {
                 } else {
                     // Blank line cannot be converted to an u32
                     best_elf = compare_elfs(&best_elf, &current_elf);
+                    update_worst_best_elf(&mut top_elves, &current_elf);
+
                     println!("{}", current_elf);
                     current_elf = Elf {
                         number: current_elf.number + 1,
@@ -79,6 +95,14 @@ pub fn run() {
         }
         println!("{}", current_elf);
         best_elf = compare_elfs(&best_elf, &current_elf);
+        update_worst_best_elf(&mut top_elves, &current_elf);
+
+        let mut top_elves_carry: u32 = 0;
+        for index in 0..top_elves.len() {
+            top_elves_carry += top_elves[index].carrying;
+            println!("One of our top elves is: {}", top_elves[index]);
+        }
+        println!("Betweeen them they carry: {}", top_elves_carry);
     } else {
         println!("Failed to read file");
     }

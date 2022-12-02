@@ -37,6 +37,13 @@ enum Hand {
     Scissors,
 }
 
+#[derive(Debug)]
+enum DesiredOutcome {
+    Win,
+    Draw,
+    Lose,
+}
+
 // The output is wrapped in a Result to allow matching on errors
 // Returns an Iterator to the Reader of the lines of the file.
 fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
@@ -47,12 +54,44 @@ where
     Ok(io::BufReader::new(file).lines())
 }
 
-fn decrypt(char: Option<&str>) -> Option<Hand> {
-    // Specify a course of action for each case.
+fn decrypt_hand(char: Option<&str>) -> Option<Hand> {
     match char {
-        Some("A") | Some("X") => Some(Hand::Rock),
-        Some("B") | Some("Y") => Some(Hand::Paper),
-        Some("C") | Some("Z") => Some(Hand::Scissors),
+        Some("A") => Some(Hand::Rock),
+        Some("B") => Some(Hand::Paper),
+        Some("C") => Some(Hand::Scissors),
+        _ => None,
+    }
+}
+
+fn decrypt_outcome(char: Option<&str>) -> Option<DesiredOutcome> {
+    match char {
+        Some("X") => Some(DesiredOutcome::Lose),
+        Some("Y") => Some(DesiredOutcome::Draw),
+        Some("Z") => Some(DesiredOutcome::Win),
+        _ => None,
+    }
+}
+
+fn select_hand(them: &Option<Hand>, outcome: &Option<DesiredOutcome>) -> Option<Hand> {
+    match them {
+        Some(Hand::Rock) => match outcome {
+            Some(DesiredOutcome::Lose) => Some(Hand::Scissors),
+            Some(DesiredOutcome::Draw) => Some(Hand::Rock),
+            Some(DesiredOutcome::Win) => Some(Hand::Paper),
+            _ => None,
+        },
+        Some(Hand::Paper) => match outcome {
+            Some(DesiredOutcome::Lose) => Some(Hand::Rock),
+            Some(DesiredOutcome::Draw) => Some(Hand::Paper),
+            Some(DesiredOutcome::Win) => Some(Hand::Scissors),
+            _ => None,
+        },
+        Some(Hand::Scissors) => match outcome {
+            Some(DesiredOutcome::Lose) => Some(Hand::Paper),
+            Some(DesiredOutcome::Draw) => Some(Hand::Scissors),
+            Some(DesiredOutcome::Win) => Some(Hand::Rock),
+            _ => None,
+        },
         _ => None,
     }
 }
@@ -88,9 +127,13 @@ pub fn run() {
         for line in lines {
             if let Ok(strategy) = line {
                 let mut iter = strategy.split_whitespace();
-                let (them, me) = (decrypt(iter.next()), decrypt(iter.next()));
+                let (them, outcome) = (decrypt_hand(iter.next()), decrypt_outcome(iter.next()));
+                let me = select_hand(&them, &outcome);
                 let score = calc_score(&me, &them);
-                println!("{:?} vs {:?} scores {:?}", me, them, score);
+                println!(
+                    "We want to {:?} so we play {:?} vs {:?} and score {:?}",
+                    outcome, me, them, score
+                );
 
                 total_score += score.unwrap() as u32;
             }

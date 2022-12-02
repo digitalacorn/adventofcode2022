@@ -40,7 +40,7 @@ Far from the most elegant of solutions, especially so in part 2 - I guess there 
 
 Two correct answers though.
 
-## December 01
+## December 02
 
 I think I went `Option` crazy. `Some` and `None` everywhere - not sure I'm seing the value of this yet - kind of a way to 'cope' until you can't cope no more. The enum certainly overkill - but is sugary sweet syntax.
 Did a parser for args in main.rs so you can now run any day using the command
@@ -48,3 +48,5 @@ Did a parser for args in main.rs so you can now run any day using the command
 ```
 cargo run -- <day>
 ```
+
+Part 2 was much easier to adapt for today.

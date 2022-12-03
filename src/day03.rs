@@ -42,15 +42,62 @@ const UPPER_A: u32 = 'A' as u32;
 
 pub fn run(part: u8) {
     println!("Welcome to day3, part {}... Rucksacks", part);
+    match part {
+        1 => part1(),
+        2 => part2(),
+        _ => panic!("Incorrect part"),
+    }
+}
+
+fn priority0based(item: char) -> u8 {
+    let i: u32 = item as u32;
+    if i >= LOWER_A && i <= LOWER_Z {
+        (i - LOWER_A).try_into().unwrap()
+    } else {
+        (26 + i - UPPER_A).try_into().unwrap()
+    }
+}
+
+fn part2() {
     let mut total_priority: u32 = 0;
-    let priority0based = |item: char| -> u8 {
-        let i: u32 = item as u32;
-        if i >= LOWER_A && i <= LOWER_Z {
-            (i - LOWER_A).try_into().unwrap()
-        } else {
-            (26 + i - UPPER_A).try_into().unwrap()
+
+    // bitwise storage for which elves have this item
+    let mut trio_map: [u8; 52] = [0; 52];
+
+    if let Ok(lines) = read_lines("./input/day03.txt") {
+        for (index, line) in lines.enumerate() {
+            if let Ok(rucksack) = line {
+                let elf_num: u8 = (index as u32 % 3) as u8;
+                println!("{} {} {}", index, elf_num, rucksack);
+                let mut found_item: (char, u8) = (' ', 0);
+                for item in rucksack.chars() {
+                    let p1 = priority0based(item);
+                    trio_map[p1 as usize] |= 1 << elf_num;
+                    if trio_map[p1 as usize] == 7 {
+                        found_item = (item, p1 + 1);
+                        break;
+                    }
+                }
+                if elf_num == 2 {
+                    let (item, priority) = found_item;
+                    println!(
+                        "Found item {} with priority {} in 3 rows preceeding row {}",
+                        item,
+                        priority,
+                        index + 1
+                    );
+                    total_priority += priority as u32;
+                    trio_map = [0; 52];
+                }
+            }
         }
-    };
+    }
+    println!("Total priority of badges {}", total_priority);
+}
+
+fn part1() {
+    let mut total_priority: u32 = 0;
+
     if let Ok(lines) = read_lines("./input/day03.txt") {
         for line in lines {
             if let Ok(rucksack) = line {

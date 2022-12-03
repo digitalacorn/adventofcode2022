@@ -58,3 +58,9 @@ Updated main to add a closure to extract command line args and pass the part to 
 Added assertions. Stopped getting hung up on Options. Went for what seems like an opimal solution - iterating over both compartments simultaneously (once) and using a map for checking, rather than hunting for each item from one compartment in the other compartment. (my first approach)
 
 Made the initial mistake of forgetting that 2+ identical items in one side is perfectly valid.
+
+Got my bitwise storage on for part 2. Managed to overflow u8 like a noob until I went with a double cast (obvs with hindsight)
+
+```rust
+    let elf_num: u8 = (index as u32 % 3) as u8;
+```

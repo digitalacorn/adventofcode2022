@@ -68,7 +68,7 @@ fn part2() {
         for (index, line) in lines.enumerate() {
             if let Ok(rucksack) = line {
                 let elf_num: u8 = (index as u32 % 3) as u8;
-                println!("{} {} {}", index, elf_num, rucksack);
+                //println!("{} {} {}", index, elf_num, rucksack);
                 let mut found_item: (char, u8) = (' ', 0);
                 for item in rucksack.chars() {
                     let p1 = priority0based(item);
@@ -81,7 +81,7 @@ fn part2() {
                 if elf_num == 2 {
                     let (item, priority) = found_item;
                     println!(
-                        "Found item {} with priority {} in 3 rows preceeding row {}",
+                        "Found item {} with priority {} in each of the 3 rows preceeding row {}",
                         item,
                         priority,
                         index + 1

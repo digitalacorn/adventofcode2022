@@ -50,3 +50,11 @@ cargo run -- <day>
 ```
 
 Part 2 was much easier to adapt for today.
+
+## December 03
+
+Updated main to add a closure to extract command line args and pass the part to the 'day' module's run function. Going forward each puzzle solution will support running both parts. (I overrwrote code for part 2 on days 1 and 2)
+
+Added assertions. Stopped getting hung up on Options. Went for what seems like an opimal solution - iterating over both compartments simultaneously (once) and using a map for checking, rather than hunting for each item from one compartment in the other compartment. (my first approach)
+
+Made the initial mistake of forgetting that 2+ identical items in one side is perfectly valid.

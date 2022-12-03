@@ -36,15 +36,67 @@ use std::fs::File;
 use std::io::{self, BufRead};
 use std::path::Path;
 
+const LOWER_A: u32 = 'a' as u32;
+const LOWER_Z: u32 = 'z' as u32;
+const UPPER_A: u32 = 'A' as u32;
+
 pub fn run(part: u8) {
     println!("Welcome to day3, part {}... Rucksacks", part);
-    let mut total_score: u32 = 0;
-    if let Ok(lines) = read_lines("./input/day02.txt") {
+    let mut total_priority: u32 = 0;
+    let priority0based = |item: char| -> u8 {
+        let i: u32 = item as u32;
+        if i >= LOWER_A && i <= LOWER_Z {
+            (i - LOWER_A).try_into().unwrap()
+        } else {
+            (26 + i - UPPER_A).try_into().unwrap()
+        }
+    };
+    if let Ok(lines) = read_lines("./input/day03.txt") {
         for line in lines {
-            if let Ok(rucksack) = line {}
+            if let Ok(rucksack) = line {
+                let compartment_len = rucksack.len() / 2;
+                let (compartment1, compartment2) =
+                    (&rucksack[..compartment_len], &rucksack[compartment_len..]);
+                assert_eq!(compartment1.len(), compartment2.len());
+
+                // maps which compartment each item (indexed by priorty) is in
+                let mut priority_map: [u8; 52] = [0; 52];
+                let mut found: bool = false;
+                let mut found_item: (char, u8) = (' ', 0);
+                let mut c1 = compartment1.chars();
+                let mut c2 = compartment2.chars();
+                while !found {
+                    let i1 = c1.next().unwrap();
+                    let p1 = priority0based(i1);
+
+                    if priority_map[p1 as usize] == 2 {
+                        // this compartment one item already in compartment two
+                        found = true;
+                        found_item = (i1, p1 + 1);
+                    } else {
+                        priority_map[p1 as usize] = 1;
+                        let i2 = c2.next().unwrap();
+
+                        let p2 = priority0based(i2);
+                        if priority_map[p2 as usize] == 1 {
+                            // this compartment two item already in compartment one
+                            found = true;
+                            found_item = (i2, p2 + 1);
+                        } else {
+                            priority_map[p2 as usize] = 2;
+                        }
+                    }
+                }
+                let (item, priority) = found_item;
+                println!(
+                    "Found item {} with priority {} in both {} and {}",
+                    item, priority, compartment1, compartment2
+                );
+                total_priority += priority as u32;
+            }
         }
     }
-    println!("Our score {}", total_score);
+    println!("Total priority {}", total_priority);
 }
 
 // The output is wrapped in a Result to allow matching on errors

@@ -22,7 +22,7 @@ cargo run
 
 VS code plugin https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer
 
-## Day 01
+## Day 01 - Calorie Counting
 
 [source](./src/day01.rs)
 
@@ -42,7 +42,7 @@ Far from the most elegant of solutions, especially so in part 2 - I guess there 
 
 Two correct answers though.
 
-## Day 02
+## Day 02 - Rock Paper Scissors
 
 [source](./src/day02.rs)
 
@@ -55,7 +55,7 @@ cargo run -- <day>
 
 Part 2 was much easier to adapt for today.
 
-## Day 03
+## Day 03 - Rucksack Reorganization
 
 [source](./src/day03.rs)
 

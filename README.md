@@ -22,7 +22,9 @@ cargo run
 
 VS code plugin https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer
 
-## December 01
+## Day 01
+
+[source](./src/day01.rs)
 
 Messed with structure types, fiddled with traits.
 
@@ -40,7 +42,9 @@ Far from the most elegant of solutions, especially so in part 2 - I guess there 
 
 Two correct answers though.
 
-## December 02
+## Day 02
+
+[source](./src/day02.rs)
 
 I think I went `Option` crazy. `Some` and `None` everywhere - not sure I'm seing the value of this yet - kind of a way to 'cope' until you can't cope no more. The enum certainly overkill - but is sugary sweet syntax.
 Did a parser for args in main.rs so you can now run any day using the command
@@ -51,16 +55,22 @@ cargo run -- <day>
 
 Part 2 was much easier to adapt for today.
 
-## December 03
+## Day 03
+
+[source](./src/day03.rs)
 
 Updated main to add a closure to extract command line args and pass the part to the 'day' module's run function. Going forward each puzzle solution will support running both parts. (I overrwrote code for part 2 on days 1 and 2)
 
-Added assertions. Stopped getting hung up on Options. Went for what seems like an opimal solution - iterating over both compartments simultaneously (once) and using a map for checking, rather than hunting for each item from one compartment in the other compartment. (my first approach)
+```
+cargo run -- <day> <part>
+```
+
+Added assertions. Stopped getting hung up on Options. Went for what seems like an opimal solution - iterating over both compartments simultaneously ( `O(n)` ) and using a map for checking, rather than hunting for each item from one compartment in the other compartment ( `O(n^2)` ) (my first approach)
 
 Made the initial mistake of forgetting that 2+ identical items in one side is perfectly valid.
 
-Got my bitwise storage on for part 2. Managed to overflow u8 like a noob until I went with a double cast (obvs with hindsight)
+Got my bitwise storage game on for part 2. Managed to overflow u8 like a noob until I went with a double cast (obvs with hindsight)
 
 ```rust
-    let elf_num: u8 = (index as u32 % 3) as u8;
+let elf_num: u8 = (index as u32 % 3) as u8;
 ```

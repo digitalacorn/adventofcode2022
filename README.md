@@ -74,3 +74,9 @@ Got my bitwise storage game on for part 2. Managed to overflow u8 like a noob un
 ```rust
 let elf_num: u8 = (index as u32 % 3) as u8;
 ```
+
+## Day 04 - Camp Cleanup
+
+[source](./src/day04.rs)
+
+Easy one once I rembered to parse string pointers into u32 integers.

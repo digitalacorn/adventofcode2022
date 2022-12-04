@@ -3,8 +3,9 @@ use std::env;
 mod day01;
 mod day02;
 mod day03;
+mod day04;
 
-const DEFAULT_DAY: u8 = 3;
+const DEFAULT_DAY: u8 = 4;
 const DEFAULT_PART: u8 = 1;
 
 fn get_day_part() -> (u8, u8) {
@@ -40,6 +41,7 @@ fn main() {
         1 => day01::run(),
         2 => day02::run(),
         3 => day03::run(part),
+        4 => day04::run(part),
         u8::MAX | _ => panic!("Invalid day"),
     }
 }

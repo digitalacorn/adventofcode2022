@@ -4,8 +4,9 @@ mod day01;
 mod day02;
 mod day03;
 mod day04;
+mod day05;
 
-const DEFAULT_DAY: u8 = 4;
+const DEFAULT_DAY: u8 = 5;
 const DEFAULT_PART: u8 = 1;
 
 fn get_day_part() -> (u8, u8) {
@@ -42,6 +43,7 @@ fn main() {
         2 => day02::run(),
         3 => day03::run(part),
         4 => day04::run(part),
+        5 => day05::run(part),
         u8::MAX | _ => panic!("Invalid day"),
     }
 }

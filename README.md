@@ -80,3 +80,10 @@ let elf_num: u8 = (index as u32 % 3) as u8;
 [source](./src/day04.rs)
 
 Easy one once I rembered to parse string pointers into u32 integers.
+
+## Day 5 - Supply Stacks
+
+[source](./src/day05.rs)
+
+Fighting with vectors unwrapping, mapping, types. :rollseyes:
+I'm a day behind so went for a lazy solution using an interim Vec 'tower of hanoi' style solution to do the moves. Instead of learning some slice methods.

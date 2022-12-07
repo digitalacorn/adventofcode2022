@@ -28,6 +28,21 @@ nppdvjthqldpwncqszvftbrmjlhg: first marker after character 6
 nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg: first marker after character 10
 zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw: first marker after character 11
 How many characters need to be processed before the first start-of-packet marker is detected?
+
+--- Part Two ---
+Your device's communication system is correctly detecting packets, but still isn't working. It looks like it also needs to look for messages.
+
+A start-of-message marker is just like a start-of-packet marker, except it consists of 14 distinct characters rather than 4.
+
+Here are the first positions of start-of-message markers for all of the above examples:
+
+mjqjpqmgbljsphdztnvjfqwrcgsmlb: first marker after character 19
+bvwbjplbgvbhsrlpgdmjqwftvncz: first marker after character 23
+nppdvjthqldpwncqszvftbrmjlhg: first marker after character 23
+nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg: first marker after character 29
+zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw: first marker after character 26
+How many characters need to be processed before the first start-of-message marker is detected?
+
  *
  */
 use std::fs::File;
@@ -45,25 +60,6 @@ pub fn run(part: u8) {
     }
 }
 
-fn uniq_test(slice: &[char]) -> usize {
-    let len = slice.len();
-    let mut skip = 0;
-    for i1 in 0..len {
-        for i2 in i1 + 1..len {
-            if slice[len - 1 - i1] == slice[len - 1 - i2] {
-                skip = len - i2
-            }
-            if skip > 0 {
-                break;
-            }
-        }
-        if skip > 0 {
-            break;
-        }
-    }
-    skip
-}
-
 fn solve(size: usize) {
     let lines: Vec<String> = lines_from_file("./input/day06.txt");
     let char_vec: Vec<char> = lines[0].chars().collect();
@@ -71,6 +67,28 @@ fn solve(size: usize) {
     assert!(char_vec.len() >= 4);
     let mut index = size - 1;
     let mut found = false;
+    let mut test_count = 0;
+
+    let mut uniq_test = |slice: &[char]| {
+        let len = slice.len();
+        let mut skip = 0;
+        for i1 in 0..len {
+            for i2 in i1 + 1..len {
+                test_count += 1;
+                if slice[len - 1 - i1] == slice[len - 1 - i2] {
+                    skip = len - i2
+                }
+                if skip > 0 {
+                    break;
+                }
+            }
+            if skip > 0 {
+                break;
+            }
+        }
+        skip
+    };
+
     while !found {
         let skip = uniq_test(&char_vec[index + 1 - size..index + 1]);
         if skip == 0 {
@@ -89,6 +107,7 @@ fn solve(size: usize) {
         &char_vec[index + 1 - size..index + 1],
         index + 1
     );
+    println!("completed using {} comparisons", test_count);
 }
 
 fn lines_from_file(filename: impl AsRef<Path>) -> Vec<String> {

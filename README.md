@@ -87,3 +87,14 @@ Easy one once I rembered to parse string pointers into u32 integers.
 
 Fighting with vectors unwrapping, mapping, types. :rollseyes:
 I'm a day behind so went for a lazy solution using an interim Vec 'tower of hanoi' style solution to do the moves. Instead of learning some slice methods.
+
+## Day 6 - Tuning Trouble
+
+[source](./src/day06.rs)
+
+Updated the file read function to give me a Line vector (stackoverflow again)
+Once in a char array this was fairly easy to solve. Part 1 I brute forced the uniq_test function with an if - elseif
+for the few combinations of checks. Updated it in part two to handle the 14 character long test pattern.
+I'm pleased with the 'skipping' aspect of the algorithm - where when it finds matching characters it knows
+not to bother testing again in a range which includes those characters. As can be seen from the output this
+skips along quite nicely.
